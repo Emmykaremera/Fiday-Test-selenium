@@ -41,7 +41,10 @@ public class HomePage  {
         return new CreateAccountPage(driver);
     }
 
-    //public AlertsPage click
+    public AlertsPage clickAlerts(){
+        clickLink("+44 20 7946 0BOO");
+        return new AlertsPage (driver);
+    }
 
 
 
