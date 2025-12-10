@@ -8,24 +8,20 @@ import pages.HomePage;
 
 public class BaseTest {
     private WebDriver driver;
-   protected HomePage homepage;
-
-   //@BeforeClass
+    protected HomePage homepage;
 
 
-@BeforeMethod
 
-   public void SetUp(){
-       System.setProperty("webdriver.chrome.driver","resources/chromedriver.exe");
-       driver = new ChromeDriver();
-       driver.manage().window().maximize();
-       driver.get("https://candymapper.com");
-       homepage = new HomePage(driver);
-   }
 
-//    @AfterMethod
-//    public void tearDown() {
-//        driver.quit();
-//    }
+    @BeforeMethod
 
+    public void SetUp() {
+        System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://candymapper.com");
+        homepage = new HomePage(driver);
+    }
 }
+
+

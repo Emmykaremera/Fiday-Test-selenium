@@ -1,11 +1,22 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 
 public class HomePage  {
     public WebDriver driver;
-
+    private By navbarItems = By.id("nav-67");
+    private By createAccountLink = By.id("n-5599-membership-create-account");
+    private By utilitiesMenuButton = By.cssSelector("[data-ux='UtilitiesMenuLink']");
+    private By navMore = By.cssSelector("[data-aid='NAV_MORE']");
+    private By zombieIpsum = By.xpath(".//a[text()='ZOMBIE IPSUM']");
 
 
     public HomePage(WebDriver driver) {
@@ -20,30 +31,48 @@ public class HomePage  {
     }
 
     public DropdownPage clickDropdown(){
-        clickLink("MORE");
+        driver.findElement(navMore).click();
         return new DropdownPage(driver);
     }
 
-    public JoinUsPage clickJoinUsLink(){
+    public LoginPage clickLogin(){
         clickLink("JOIN US");
-        return new JoinUsPage(driver);
+        return new LoginPage(driver);
     }
 
 
-    public HoversPage clickHovers(){
-        clickLink("ZOMBIE IPSUM");
-        return new HoversPage(driver);
+    public void clickHovers(int index){
+
+
+        List<WebElement> figures = driver.findElements(zombieIpsum);
+        WebElement figure = figures.get(index - 1);
+
+        Actions actions = new Actions(driver);
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", figure);
+        actions.moveToElement(figure).perform();
+
     }
 
 
     public CreateAccountPage clickCreateAccountButton(){
-        clickLink("CREATE ACCOUNT");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        WebElement menuButton = wait.until(ExpectedConditions.elementToBeClickable(utilitiesMenuButton));
+        menuButton.click();
+
+        WebElement createAccount = wait.until(
+                ExpectedConditions.elementToBeClickable(createAccountLink)
+        );
+        createAccount.click();
+
         return new CreateAccountPage(driver);
     }
 
-    public AlertsPage clickAlerts(){
-        clickLink("+44 20 7946 0BOO");
-        return new AlertsPage (driver);
+
+    public void clickAlerts(){
+        driver.findElements(By.cssSelector("a[href*='tel:+442079460']")).get(0).click();
+        driver.switchTo().alert().accept();
+
     }
 
 

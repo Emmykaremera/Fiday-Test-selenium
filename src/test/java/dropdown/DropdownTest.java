@@ -12,13 +12,12 @@ public class DropdownTest extends BaseTest {
     @Test
     public void testSelectedOption(){
         homepage.removePopUp();
+        String option = "Keysight";
         var dropDownPage = homepage.clickDropdown();
-        String option = "Option 1";
         dropDownPage.selectFromDropDown(option);
+        System.out.println(dropDownPage.getSelectedOption());
+        assertEquals(dropDownPage.getSelectedOption() ,option);
 
-        var selectedOptions = dropDownPage.getSelectedOptions();
-        assertEquals(selectedOptions.size(), 0, "Incorrect number of selected option!");
-        assertTrue(selectedOptions.contains(option), " Option not selected");
 
 
     }

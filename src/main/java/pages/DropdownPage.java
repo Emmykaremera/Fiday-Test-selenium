@@ -3,34 +3,43 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ISelect;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DropdownPage {
     private WebDriver driver;
-    private By dropdown = By.linkText("MORE");
-    
-    
+    private WebDriverWait wait;
+
+    private By dropdown = By.cssSelector("ul[data-ux='Dropdown']");
+    private String selectedOption;
+
+
     public DropdownPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, 5);
     }
 
-    
-    public void selectFromDropDown(String option) {
-        findDropdownElement().selectByVisibleText(option);
-    }
-    
-    public List<String> getSelectedOptions() {
-        List<WebElement> selectedElements = findDropdownElement().getAllSelectedOptions();
-        return selectedElements.stream()
-                .map(e -> e.getText())
-                .collect(Collectors.toList());
+
+    public String selectFromDropDown(String option) {
+
+        WebElement menu = wait.until(ExpectedConditions.visibilityOfElementLocated(dropdown));
+
+        WebElement item = menu.findElement(By.xpath(".//a[normalize-space()='" + option + "']"));
+        item.click();
+        return selectedOption = option;
+
     }
 
-    private Select findDropdownElement() {
-        return new Select(driver.findElement(dropdown));
+    public int getSelectedOptions() {
+
+        WebElement selected = wait.until(ExpectedConditions.visibilityOfElementLocated(dropdown));
+        return selected.findElements(By.tagName("li")).size();
+    }
+
+    public String getSelectedOption() {
+        return selectedOption;
     }
 }
